@@ -1,2 +1,2 @@
 # Sudoku Solver
-Sudoku Solver in Python
+Sudoku Solver in Python Starting Template

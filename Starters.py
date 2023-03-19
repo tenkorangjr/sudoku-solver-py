@@ -1,42 +1,42 @@
 class Cell:
 
-    def __init__(self, row=None, col=None, value=0, is_locked=False) -> None:
-        self.row = row
-        self.col = col
-        self.value = value
-        self.is_locked = is_locked
+    def __init__(self, row=-1, col=-1, value=0, is_locked=False) -> None:
+        self.row: int = row
+        self.col: int = col
+        self.value: int = value
+        self.is_locked: bool = is_locked
 
     def __str__(self) -> str:
         """String Representation of Cell"""
 
-        return self.value
+        return str(self.value)
 
-    def getRow(self):
+    def getRow(self) -> int:
         """Get the Row of Cell"""
 
         return self.row
 
-    def getCol(self):
+    def getCol(self) -> int:
         """Get the Column of Cell"""
 
         return self.col
 
-    def getValue(self):
+    def getValue(self) -> int:
         """Get the Value of Cell"""
 
         return self.value
 
-    def isLocked(self):
+    def isLocked(self) -> bool:
         """Check if the Cell is Locked"""
 
         return self.is_locked
 
-    def setValue(self, value):
+    def setValue(self, value: int) -> None:
         """Set the Value of Cell"""
 
         self.value = value
 
-    def setLocked(self, locked):
+    def setLocked(self, locked: bool) -> None:
         """Set whether a Cell should be locked"""
 
         self.is_locked = locked
@@ -45,19 +45,30 @@ class Cell:
 class Board:
 
     def __init__(self) -> None:
-        self.arr = [[] for _ in range(9)]
+        self.arr = [[Cell() for _ in range(9)] for _ in range(9)]
+        self.unspecifiedCells = 0
 
-    def getCell(self, row, col):
+    def getCell(self, row: int, col: int) -> Cell:
         """Get the Cell at a particular coordinate on the board"""
 
         return self.arr[row][col]
 
-    def setCell(self, row, col, value, locked=False):
+    def validValue(self, row: int, col: int, val: int) -> bool:
+        """Check if a value is valid for a particular cell"""
+
+        pass
+
+    def validSolution(self) -> bool:
+        """Check if a given solution is valid"""
+
+        pass
+
+    def setCell(self, row: int, col: int, value: int, locked=False) -> None:
         """Set the value of a Cell on the board"""
 
         self.arr[row][col] = Cell(row, col, value, locked)
 
-    def readFile(self, filename):
+    def readFile(self, filename: str) -> None:
         """Read a board file"""
 
         with open(filename, "r") as file:
@@ -68,29 +79,29 @@ class Board:
                 line.strip()
                 num_list = line.split(" ")
                 for num in num_list:
-                    if num == 0:
-                        self.arr[row].append(Cell(row, col, num))
+                    if int(num) == 0:
+                        self.arr[row][col] = Cell(row, col, int(num))
+                        self.unspecifiedCells += 1
                     else:
-                        self.arr[row].append(Cell(row, col, num, True))
+                        self.arr[row][col] = Cell(row, col, int(num), True)
 
                     col += 1
-
                 row += 1
                 col = 0
 
     def __str__(self) -> str:
         """String Representation of a Board"""
 
-        output = "\n"
+        output = f"\n"
         for row in range(9):
             for col in range(9):
-                output += f"{self.arr[row][col]}" + " "
+                output += f"{self.arr[row][col]} "
                 if (col + 1) % 3 == 0:
-                    output += " "
+                    output += f" "
 
-            output += "\n"
+            output += f"\n"
             if (row + 1) % 3 == 0:
-                output += "\n"
+                output += f"\n"
 
         return output
 
@@ -165,7 +176,7 @@ class LinkedList:
         self.head.prev = None
         self.size -= 1
 
-        return out
+        return out.val
 
     def removeLast(self):
         """Remove the last item in a LinkedList"""
@@ -178,7 +189,7 @@ class LinkedList:
         self.tail.next = None
         self.size -= 1
 
-        return out
+        return out.val
 
 
 class Stack:
@@ -205,3 +216,8 @@ class Stack:
         """Check if a stack is empty"""
 
         return self.arr.isEmpty()
+
+    def size(self):
+        """Get the size of the stack"""
+
+        return self.arr.size
