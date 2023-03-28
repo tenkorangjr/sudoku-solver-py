@@ -147,6 +147,7 @@ class LinkedList:
         if not self.head:
             self.head = ListNode(val)
             self.tail = self.head
+            return
 
         new_node = ListNode(val, self.head)
         self.head.prev = new_node
@@ -159,6 +160,7 @@ class LinkedList:
         if not self.tail:
             self.head = ListNode(val)
             self.tail = self.head
+            return
 
         new_node = ListNode(val=val, prev=self.tail)
         self.tail.next = new_node
