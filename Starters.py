@@ -122,8 +122,8 @@ class ListNode:
 class LinkedList:
 
     def __init__(self) -> None:
-        self.head = None
-        self.tail = None
+        self.head: ListNode = None
+        self.tail: ListNode = None
         self.size = 0
 
     def getLast(self):
@@ -144,12 +144,13 @@ class LinkedList:
     def addFirst(self, val):
         """Add item to index 0 of a LinkedList"""
 
-        if not self.head:
+        if self.head == None:
             self.head = ListNode(val)
             self.tail = self.head
+            self.size += 1
             return
 
-        new_node = ListNode(val, self.head)
+        new_node = ListNode(val=val, next=self.head)
         self.head.prev = new_node
         self.head = new_node
         self.size += 1
@@ -157,9 +158,10 @@ class LinkedList:
     def addLast(self, val):
         """Add item to the last index of a LinkedList"""
 
-        if not self.tail:
+        if self.tail == None:
             self.head = ListNode(val)
             self.tail = self.head
+            self.size += 1
             return
 
         new_node = ListNode(val=val, prev=self.tail)
@@ -173,12 +175,16 @@ class LinkedList:
         if not self.head:
             return
 
-        out = self.head
-        self.head = self.head.next
-        self.head.prev = None
+        out = self.head.val
+
+        if self.head.next:
+            self.head: ListNode = self.head.next
+            self.head.prev = None
+        else:
+            self.tail, self.head = None, None
         self.size -= 1
 
-        return out.val
+        return out
 
     def removeLast(self):
         """Remove the last item in a LinkedList"""
@@ -187,11 +193,30 @@ class LinkedList:
             return
 
         out = self.tail
-        self.tail = self.tail.prev
-        self.tail.next = None
+        if self.tail.prev:
+            self.tail: ListNode = self.tail.prev
+            self.tail.next = None
+        else:
+            self.tail, self.head = None, None
+
         self.size -= 1
 
         return out.val
+    
+    def __str__(self) -> str:
+        if not self.head:
+            return "[]"
+
+        walker = self.head
+        out = "["
+
+        for _ in range(self.size):
+            out += f"{walker}, "
+            walker = walker.next
+        
+        out += f"{walker}]"
+
+        return out
 
 
 class Stack:
